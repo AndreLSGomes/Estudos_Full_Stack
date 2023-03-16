@@ -4,7 +4,7 @@ Este repositório destina-se aos estudos da linguagem Java e inicialmente Angula
 
 ## Projetos Desenvolvidos
 
-### 01. Biblioteca Virtual
+#### 01. Biblioteca Virtual
   + [x] Introdução a API Rest - CRUD usuários
   + [ ] Evoluir CRUD usuários para trafegar com DTOs
   + [ ] Evoluir, implementando autenticação
@@ -12,4 +12,4 @@ Este repositório destina-se aos estudos da linguagem Java e inicialmente Angula
   + [ ] Desenvolver Front-End - Login de acesso
   + [ ] Desenvolver Front-End - Consumo das APIs
 
-### 02. CRM Virtual 
+#### 02. CRM Virtual 
