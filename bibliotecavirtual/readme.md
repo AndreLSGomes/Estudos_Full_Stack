@@ -14,7 +14,7 @@
 
 ##
 
-#### PS: Não foi utilizado tráfego de dados com camadas DTO pois foi um estudo introdutório.
+#### Ps: Não foi utilizado tráfego de dados com camadas DTO pois foi um estudo introdutório.
 
 ##
 
