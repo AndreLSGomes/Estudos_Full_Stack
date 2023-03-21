@@ -31,4 +31,3 @@
 - Consumir uma API REST usando um frontend desenvolvido no curso
 - Usar o banco de dados H2 
 - Conceitos de Spring Data JPA
-- Usar o Github e Github Pages para "hospedar" seu frontend
