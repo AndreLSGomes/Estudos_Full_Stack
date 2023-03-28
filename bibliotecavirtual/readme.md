@@ -20,8 +20,13 @@
 
 ### Créditos
 
-#### Valdir Cezar Tutoriais 
+#### Valdir Cezar Tutoriais - [Minha Primira API](https://www.youtube.com/watch?v=hZbEr5XVL0M&list=PLA8Qj9w4RGkXwPerFo4ZDFEessyNJW1ol)
 
-<a href="https://www.youtube.com/watch?v=hZbEr5XVL0M&list=PLA8Qj9w4RGkXwPerFo4ZDFEessyNJW1ol" target="_blank"><img src="https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white"></a>
-
-Spring Boot 2 - Sua Primeira API REST 2021 ****
+- Instalar e configurar as ferramentas corretas para iniciar um projeto
+- Conceitos básicos de Spring Boot 2
+- Conceitos básicos de Git
+- Conceitos básicos de Angular 10
+- Criar uma API REST
+- Consumir uma API REST usando a ferramenta Postman
+- Usar o banco de dados H2 
+- Conceitos de Spring Data JPA
