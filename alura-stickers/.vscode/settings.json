@@ -5,5 +5,7 @@
         "lib/**/*.jar"
     ],
     "java.project.encoding": "setDefault",
-    "files.autoGuessEncoding": true
+    "files.autoGuessEncoding": true,
+    "terminal.explorerKind": "integrated",
+    "terminal.integrated.automationProfile.windows": {}
 }
