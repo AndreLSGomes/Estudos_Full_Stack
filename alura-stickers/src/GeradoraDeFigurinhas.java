@@ -17,7 +17,7 @@ import javax.imageio.ImageIO;
 
 public class GeradoraDeFigurinhas {
 
-    public void cria(InputStream inputStream, String nomeArquivo, Double rating) throws Exception {
+    public void cria(InputStream inputStream, String nomeArquivo, Double rating, String copyright) throws Exception {
 
         /*
             Fazer a leitura da imagem
@@ -42,7 +42,7 @@ public class GeradoraDeFigurinhas {
         // Obtendo altura e largura da imagem
         int largura = imagemOriginal.getWidth();
         int altura = imagemOriginal.getHeight();
-        int novaAltura = altura + 200;
+        int novaAltura = altura + 100;
         
         // Criando a nova imagem
         BufferedImage novaImagem =  new BufferedImage(largura, novaAltura, BufferedImage.TRANSLUCENT);
@@ -63,15 +63,17 @@ public class GeradoraDeFigurinhas {
             word = "TOPZERA";
         } else if(rating >= 8.0 && rating < 9.0) {
             word = "LEGAL";
-        } else {
+        } else if(rating > 0 && rating < 8) {
             word = "MAOMENOS";
+        }else {
+            word = copyright.toUpperCase();
         }
 
         FontMetrics fontMetrics = graphics.getFontMetrics();
         Rectangle2D rectangle   = fontMetrics.getStringBounds(word, graphics);
         int wordWidth           = (int)rectangle.getWidth();
         int wordPositionX       = (largura - wordWidth) / 2;
-        int wordPositionY       = (novaAltura - 100);
+        int wordPositionY       = (novaAltura - 20);
 
         // Escrevendo na nova imagem
         graphics.drawString(word, wordPositionX, wordPositionY);

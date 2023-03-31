@@ -1,12 +1,7 @@
 import java.io.InputStream;
-import java.net.URI;
 import java.net.URL;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.net.http.HttpResponse.BodyHandlers;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 public class App {
@@ -21,16 +16,14 @@ public class App {
             Manipular e exibir os dados em nossa aplicação
         */
 
-        // Fazer conexão HTTP para buscar Top 250 filmes
-        String url_top_movies     = "https://raw.githubusercontent.com/alura-cursos/imersao-java-2-api/main/TopMovies.json";
-        String url_top_series     = "https://raw.githubusercontent.com/alura-cursos/imersao-java-2-api/main/MostPopularTVs.json";
-        String url_popular_movies = "https://raw.githubusercontent.com/alura-cursos/imersao-java-2-api/main/MostPopularMovies.json";
-        String url_popular_series = "https://raw.githubusercontent.com/alura-cursos/imersao-java-2-api/main/MostPopularTVs.json";
-
-        URI endereco = URI.create(url_top_movies);
-        Integer opcao = -999;
-
-        Scanner scan = new Scanner(System.in);
+        Integer opcao               = -999;
+        Scanner scan                = new Scanner(System.in);
+        String url                  = "";
+        ExtratorDeConteudo extrator = new ExtratorDeConteudoDaNasa();
+        List<Conteudo> conteudos    = new ArrayList<>();
+        var geradora                = new GeradoraDeFigurinhas();             
+        Double stars                = 0.0;
+        String copyright            = "";
 
         while (opcao != 9) {
 
@@ -39,6 +32,7 @@ public class App {
             System.out.println("2 - Top Series");
             System.out.println("3 - Most Popular Movies");
             System.out.println("4 - Most popular Series");
+            System.out.println("5 - Nasa Astronomy Pictures");
             System.out.println("9 - SAIR DO SISTEMA\n");
 
             System.out.print("O que deseja visualizar? " + "\u001b[m");
@@ -46,20 +40,24 @@ public class App {
 
             switch (opcao) {
                 case 1:
-                    endereco = URI.create(url_top_movies);
+                    url = "https://raw.githubusercontent.com/alura-cursos/imersao-java-2-api/main/TopMovies.json";
                     System.out.println("\n\u001b[31mTop Movies \u001b[m");
                     break;
                 case 2:
-                    endereco = URI.create(url_top_series);
+                    url = "https://raw.githubusercontent.com/alura-cursos/imersao-java-2-api/main/MostPopularTVs.json";
                     System.out.println("\n\u001b[31mTop Series \u001b[m");
                     break;
                 case 3:
-                    endereco = URI.create(url_popular_movies);
+                    url = "https://raw.githubusercontent.com/alura-cursos/imersao-java-2-api/main/MostPopularMovies.json";
                     System.out.println("\n\u001b[31mPopular Movies \u001b[m");
                     break;
                 case 4:
-                    endereco = URI.create(url_popular_series);
+                    url = "https://raw.githubusercontent.com/alura-cursos/imersao-java-2-api/main/MostPopularTVs.json";
                     System.out.println("\n\u001b[31mPopular Series \u001b[m");
+                    break;
+                case 5:
+                    url = "https://api.nasa.gov/planetary/apod?api_key=ab2Tua2vGOm2J0wN5op99L2UVWlROU8tykD32QUI&start_date=2022-06-12&end_date=2022-06-16";
+                    System.out.println("\n\u001b[31mNasa Astronomy Pictures \u001b[m");
                     break;
                 case 9:
                     System.out.println("\n\u001b[31mVOLTE SEMPRE QUE DESEJAR! \u001b[m \n");
@@ -69,46 +67,55 @@ public class App {
                     continue;
             }
 
-            if(opcao >= 1 && opcao <= 4 ) {
+            if(opcao >= 1 && opcao <= 5 ) {
 
-                HttpClient client = HttpClient.newHttpClient();
-                HttpRequest request = HttpRequest.newBuilder(endereco).GET().build();
-                HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
-                String body = response.body();
+                var http = new ClienteHttp();
+                String json = http.buscaDados(url);
 
-                // Extrair apenas dados que nos interessam
-                JsonParser parser = new JsonParser();
-                List<Map<String, String>> listaDeFilmes = parser.parse(body);
-                
-                var geradora = new GeradoraDeFigurinhas();
+                if(opcao != 5) {
+                    extrator = new ExtratorDeConteudoImdb();
+                }else {
+                    extrator = new ExtratorDeConteudoDaNasa();
+                }
+
+                conteudos = extrator.extraiConteudos(json);
             
-                for (Map<String,String> filme : listaDeFilmes) {
+                for (int i = 0; i < conteudos.size(); i++) {
 
-                    // Lendo Imagem
-                    String urlImage = filme.get("image");
-                    InputStream inputStream = new URL(urlImage).openStream();
+                    Conteudo conteudo = conteudos.get(i);
+
+                    InputStream inputStream = new URL(conteudo.getUrlImagem()).openStream();
 
                     // Setando nome da figurinha
-                    String nomeArquivo = filme.get("title") + ".png";
+                    String nomeArquivo = conteudo.getTitulo();
+                    nomeArquivo = nomeArquivo.replaceAll("[^a-zA-Z0-9]","_") + ".png";
 
-                    // Gerando a figurinha
-                    Double stars = Double.parseDouble(filme.get("imDbRating"));
-                    geradora.cria(inputStream, nomeArquivo, stars);
+                    System.out.println("\n\u001b[1m  Title: \u001b[m" + conteudo.getTitulo());
+                    System.out.println("\u001b[1m Poster: \u001b[m" + conteudo.getUrlImagem());
 
-                    System.out.println("\n\u001b[1m  Title: \u001b[m" + filme.get("title"));
-                    System.out.println("\u001b[1m Poster: \u001b[m" + filme.get("image"));
-                    System.out.print("\u001b[1m Rating: \u001b[m" + filme.get("imDbRating") + " ");
+                    // Gerando a figurinha para API's do IMDB e printando sua classificação
+                    if(opcao != 5) {
+                        stars = Double.parseDouble(conteudo.getImDbRating());
+                        
+                        geradora.cria(inputStream, nomeArquivo, stars, copyright);
+                        
+                        System.out.print("\u001b[1m Rating: \u001b[m" + " ");
 
-                    String otimo = "😍";
-                    String bom   = "🙂";
-                    String ruim  = "😒";
-                    
-                    if(stars >= 8.0) {
-                        System.out.println(otimo);
-                    } else if(stars >= 7.0 && stars < 8.0) {
-                        System.out.println(bom);
-                    }else {
-                        System.out.println(ruim);
+                        String otimo = "😍";
+                        String bom   = "🙂";
+                        String ruim  = "😒";
+                        
+                        if(stars >= 8.0) {
+                            System.out.println(otimo);
+                        } else if(stars >= 7.0 && stars < 8.0) {
+                            System.out.println(bom);
+                        }else {
+                            System.out.println(ruim);
+                        }
+                    } else {
+                        stars     = 0.0;
+                        copyright = conteudo.getCopyright();
+                        geradora.cria(inputStream, nomeArquivo, stars, copyright);
                     }
                 }
             }
