@@ -69,4 +69,54 @@
   > Criar uma Enum que une, como configurações, a URL da API e o extrator utilizado.
   
 ### Aula 04 - Criando nossa própria API com Spring
+  + [x] Documentação do Spring Framework:
+  > https://spring.io/
+  + [x] Link para iniciar um projeto utilizando Spring:
+  > https://start.spring.io/
+  + [x] Link para download do Maven:
+  > https://maven.apache.org/download.cgi
+  + [x] Link para download do Postman:
+  > https://www.postman.com/
+  + [x] Página para fazer o registro e começar a utilizar o MongoDb Atlas:
+  > https://www.mongodb.com/cloud/atlas/register
+  + [x] GitHub com os logos das linguagens de programação:
+  > https://github.com/abrahamcalf/programming-languages-logos
+  + [x] Artigo sobre o pack de stickers da Alura para Whatsapp e Telegram:
+  > https://www.alura.com.br/artigos/stickers-dev-aluraverso-whatsapp-telegram
+  + [x] Material Complementar:
+  > https://www.alura.com.br/conteudo/maven-gerenciamento-dependencias-build-aplicacoes-java <br>
+  > https://www.youtube.com/watch?v=weQ8ssA6iBU <br>
+  > https://www.alura.com.br/artigos/rest-conceito-e-fundamentos <br>
+  > https://www.hipsters.tech/mongodb-hipsters-ponto-tech-305/ <br>
+  > https://www.youtube.com/watch?v=aure5d3B88g <br>
+  > https://www.alura.com.br/artigos/spring-conheca-esse-framework-java <br>
+  > https://www.youtube.com/watch?v=op81bMbgZXs
+  + [x] Desafios Aula 04:
+  > Finalizar o CRUD (Create, Read, Update e Delete) para que se possa atualizar e excluir uma linguagem cadastrada. <br>
+  > Devolver a listagem ordenada pelo ranking. <br>
+  > Retornar o status 201 quando um recurso (linguagem, no nosso caso) for cadastrado através do POST. <br>
+
 ### Aula 05 - Publicando nossa API no Cloud
+  + [x] Documentação do Docker, a plataforma de containers utilizada para construir a imagem cujo deploy foi feito no Fly.io:
+  > https://docs.docker.com/get-started/overview/
+  + [x] Site do Docker Hub , repositório central de imagens que podem ser usadas para executar containers de diferentes tecnologias e ferramentas:
+  > https://hub.docker.com/
+  + [x] Site do Fly.io, o PaaS (plataforma como serviço) utilizado nesta segunda edição da Imersão Java. Requer cartão de crédito. É fundamental entender a precificação e as quotas gratuitas do Fly.io:
+  > https://fly.io/
+  + [x] Site do Heroku, que foi o PaaS utilizado na primeira edição da Imersão Java. É importante entender a precificação do Heroku:
+  > https://www.heroku.com/ <br>
+  > https://www.heroku.com/pricing
+  + [x] Documentação sobre a Oracle Cloud:
+  > https://docs.oracle.com/pt-br/iaas/Content/home.htm
+  + [x] Fazendo deploy da imagem da aula:
+  > Para que você não precise instalar o Docker, criar um Dockerfile e fazer o build de uma imagem Docker com sua aplicação na sua própria máquina, disponibilizamos a imagem gerada na aula no seguinte link: https://hub.docker.com/repositories/jacquelineoliveira <br>
+  > O deploy no Fly.io pode ser feito com os seguintes passos: <br>
+  > 1- Instale o comando flyctl na sua máquina: https://fly.io/docs/hands-on/install-flyctl/ <br>
+  > 2- Em um Terminal, execute o comando: flyctl launch --image jacquelineoliveira/linguagensapi:latest <br>
+  > 3- Configure o endereço do seu MongoDB com o comando: flyctl secrets set "SPRING_DATA_MONGODB_URI=mongodb+srv://seuusuario:suasenha@clusterAbc.xvcnx.mongodb.net/aluraDb?retryWrites=true&w=majority" (não deixe de definir o usuário e senha corretos)
+  + [x] Material complementar
+  > https://www.alura.com.br/artigos/comecando-com-docker <br>
+  > https://www.alura.com.br/artigos/heroku-vercel-outras-opcoes-cloud-plataforma <br>
+  > https://www.alura.com.br/podcast/hipsterstech-integracao-continua-deploy-continuo-e-github-actions-hipsters-213-a335 <br>
+  > https://www.jetbrains.com/lp/devecosystem-2021/java/
+  
