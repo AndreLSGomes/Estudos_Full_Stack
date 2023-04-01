@@ -17,8 +17,7 @@ import javax.imageio.ImageIO;
 
 public class GeradoraDeFigurinhas {
 
-    public void cria(InputStream inputStream, String nomeArquivo, Double rating, String copyright) throws Exception {
-
+    public void cria(InputStream inputStream, String nomeArquivo, String texto, InputStream inputStreamSobreposicao) throws Exception {
         /*
             Fazer a leitura da imagem
             Criar nova imagem com transparência e novo tamanho (em memória)
@@ -39,7 +38,7 @@ public class GeradoraDeFigurinhas {
         */
         BufferedImage imagemOriginal = ImageIO.read(inputStream);
 
-        // Obtendo altura e largura da imagem
+        // Obtendo altura e largura da imagem e setando a largura da imagem a ser criada
         int largura = imagemOriginal.getWidth();
         int altura = imagemOriginal.getHeight();
         int novaAltura = altura + 100;
@@ -47,46 +46,41 @@ public class GeradoraDeFigurinhas {
         // Criando a nova imagem
         BufferedImage novaImagem =  new BufferedImage(largura, novaAltura, BufferedImage.TRANSLUCENT);
 
-        // Copiando a imagem
+        // Copiando a imagem original para a nova imagem
         Graphics2D graphics = (Graphics2D) novaImagem.getGraphics();
         graphics.drawImage(imagemOriginal, 0, 0, null);
 
+        // Desenhando a sobreposição na imagem
+        BufferedImage imagemSobreposicao = ImageIO.read(inputStreamSobreposicao);
+        int posicaoImagemSobreposicaoY = novaAltura - imagemSobreposicao.getHeight();
+        graphics.drawImage(imagemSobreposicao, 0, posicaoImagemSobreposicaoY, null);
+
         // Setando a fonte para escrever na imagem
-        var font = new Font("Impact", Font.BOLD, 80 );
+        var font = new Font("Impact", Font.BOLD, 64);
+        graphics.setColor(Color.BLACK);
         graphics.setFont(font);
-        graphics.setColor(Color.yellow);
-
-        // Setando o texto a ser escrito na imagem
-        String word = "";
-
-        if(rating >= 9.0) {
-            word = "TOPZERA";
-        } else if(rating >= 8.0 && rating < 9.0) {
-            word = "LEGAL";
-        } else if(rating > 0 && rating < 8) {
-            word = "MAOMENOS";
-        }else {
-            word = copyright.toUpperCase();
-        }
 
         FontMetrics fontMetrics = graphics.getFontMetrics();
-        Rectangle2D rectangle   = fontMetrics.getStringBounds(word, graphics);
-        int wordWidth           = (int)rectangle.getWidth();
-        int wordPositionX       = (largura - wordWidth) / 2;
-        int wordPositionY       = (novaAltura - 20);
+        Rectangle2D rectangle   = fontMetrics.getStringBounds(texto, graphics);
+        int textodWidth         = (int)rectangle.getWidth();
+        int textoPositionX      = (largura - textodWidth) / 2;
+        int textoPositionY      = (novaAltura - 20);
 
         // Escrevendo na nova imagem
-        graphics.drawString(word, wordPositionX, wordPositionY);
+        graphics.drawString(texto, textoPositionX, textoPositionY);
 
         FontRenderContext fontRenderContext = graphics.getFontRenderContext();
-        var textLayout = new TextLayout(word, font, fontRenderContext);
+        var textLayout = new TextLayout(texto, font, fontRenderContext);
+        
         Shape outline = textLayout.getOutline(null);
         AffineTransform transform = graphics.getTransform();
-        transform.translate(wordPositionX, wordPositionY);
+        transform.translate(textoPositionX, textoPositionY);
         graphics.setTransform(transform);
+
         var outlineStroke = new BasicStroke(largura * 0.004f);
         graphics.setStroke(outlineStroke);
-        graphics.setColor(Color.BLACK);
+
+        graphics.setColor(Color.WHITE);
         graphics.draw(outline);
         graphics.setClip(outline);
 

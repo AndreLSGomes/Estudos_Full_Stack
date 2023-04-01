@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
@@ -22,8 +24,7 @@ public class App {
         ExtratorDeConteudo extrator = new ExtratorDeConteudoDaNasa();
         List<Conteudo> conteudos    = new ArrayList<>();
         var geradora                = new GeradoraDeFigurinhas();             
-        Double stars                = 0.0;
-        String copyright            = "";
+        Double stars;
 
         while (opcao != 9) {
 
@@ -78,6 +79,9 @@ public class App {
                     extrator = new ExtratorDeConteudoDaNasa();
                 }
 
+                String textoFigurinha;
+                InputStream imgRating;
+
                 conteudos = extrator.extraiConteudos(json);
             
                 for (int i = 0; i < conteudos.size(); i++) {
@@ -97,8 +101,6 @@ public class App {
                     if(opcao != 5) {
                         stars = Double.parseDouble(conteudo.getImDbRating());
                         
-                        geradora.cria(inputStream, nomeArquivo, stars, copyright);
-                        
                         System.out.print("\u001b[1m Rating: \u001b[m" + " ");
 
                         String otimo = "😍";
@@ -107,16 +109,23 @@ public class App {
                         
                         if(stars >= 8.0) {
                             System.out.println(otimo);
+                            textoFigurinha    = "TOPZERA";
+                            imgRating         = new FileInputStream(new File("sobreposicao/otimo.png"));
                         } else if(stars >= 7.0 && stars < 8.0) {
                             System.out.println(bom);
+                            textoFigurinha    = "BOM";
+                            imgRating         = new FileInputStream(new File("sobreposicao/bom.png"));
                         }else {
                             System.out.println(ruim);
+                            textoFigurinha    = "RUIM";
+                            imgRating         = new FileInputStream(new File("sobreposicao/ruim.png"));
                         }
                     } else {
-                        stars     = 0.0;
-                        copyright = conteudo.getCopyright();
-                        geradora.cria(inputStream, nomeArquivo, stars, copyright);
+                        textoFigurinha = conteudo.getCopyright();
+                        imgRating      = new FileInputStream(new File("sobreposicao/otimo.png"));
                     }
+                    
+                    geradora.cria(inputStream, nomeArquivo, textoFigurinha, imgRating);
                 }
             }
 		}
